@@ -1,0 +1,15 @@
+services:
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: meilisearch
+    ports:
+      - "7700:7700" # Expose port to host
+    environment:
+      MEILI_MASTER_KEY: "mityahuang-meilisearch1017" # Replace with your secure key
+    volumes:
+      - meili_data:/meili_data # Persist database
+    restart: unless-stopped
+
+volumes:
+  meili_data:
+    name: meili_data

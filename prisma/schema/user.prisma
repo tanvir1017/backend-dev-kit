@@ -1,0 +1,150 @@
+model User {
+    id           String    @id @default(auto()) @map("_id") @db.ObjectId
+    password     String
+    email        String    @unique
+    role         UserRole  @default(MEMBER)
+    memberId     String    @unique
+    totalLogIn   Int       @default(1)
+    lastLoggedIn DateTime?
+
+    lastPasswordChangedAt DateTime    @default(now()) // extra security check for changing password.Password changes shouldn't be before token issued
+    isVerified            Boolean     @default(false) // verified by email
+    isBlocked             Boolean     @default(false) // is user Blocked by the system or not
+    authMethod            OauthMethod @default(EMAIL_PASS)
+    otp                   Int?
+    otpExpires            String? // 10m see the env - JWT_OTP_EXPIRES_IN
+    stripeCustomerId      String?
+    memberPoints          Int         @default(0)
+    googleId              String?     @unique
+    facebookId            String?     @unique
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // 1-to-1 relationship
+    profile         Profile?
+    // 1-to-1 relationship
+    paymentPassword PaymentPassword?
+    // 1-to-m relationship
+    address         Address[]
+    // 1-to-m relationship
+    order           Order[]          @relation("users-order")
+    // 1-to-1 relationship
+    purchasingAgent PA_WA_Stuffs?    @relation("purchasing-agent")
+    wareHouseStuff  PA_WA_Stuffs?    @relation("warehouse_stuff")
+    // 1-to-m relationship
+    qcDetails       QcDetails[]
+    // 1-to-m relationship
+    payment         Payment[]
+    // m-to-1 relationship
+    packages        Packages[]
+
+    // 1 to m relationship
+    favorite Favorites[] @relation("favorites")
+
+    // Self-referencing 1-to-1 relationship: User refers to the user who created them
+    createdById String? @db.ObjectId
+    createdBy   User?   @relation(name: "created-by", fields: [createdById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+    // Self-referencing 1-to-many relationship: A user can create multiple other users
+    creates User[] @relation(name: "created-by")
+
+    // m-to-1 relationship
+    packagesWs Packages[] @relation("pkg_warehouse_stuff") // Warehouse agent
+    packagesPa Packages[] @relation("pkg_purchasing_agent") // Purchasing agent
+
+    diyOrders   DiyOrders[]   @relation("diy-orders")
+    ActivityLog ActivityLog[] @relation("activity-logs")
+
+    @@map("users")
+}
+
+model PaymentPassword {
+    id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+    isRequirePwd          Boolean  @default(false)
+    password              String?
+    otp                   Int?
+    otpExpires            String? // 10m see the env - JWT_OTP_EXPIRES_IN
+    lastPasswordChangedAt DateTime @default(now())
+
+    userId String @unique @db.ObjectId
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("payment-password")
+}
+
+model Profile {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    firstName   String
+    lastName    String?
+    fullName    String
+    userImage   String    @default("")
+    gender      Gender?
+    dateOfBirth DateTime?
+    phoneNumber String?
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+
+    //1-to-1 relationship
+    userId String @unique @db.ObjectId
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("profile")
+}
+
+model Address {
+    id          String       @id @default(auto()) @map("_id") @db.ObjectId
+    country     String
+    city        String?
+    street      String?
+    state       String?
+    apartment   String?
+    addressType AddressType? // Enum for HOME, WORK
+    coordinates Json? // { lat: number, lng: number } for maps integration
+    isDefault   Boolean      @default(false)
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+
+    // 1-to-m relationship
+    userId String @db.ObjectId
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    // 1-to-m relationship
+    package Packages[]
+}
+
+model PromotionLevel {
+    id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+    promotionLevelTips  String
+    experienceThreshold Int
+    commissionRateTips  Int
+    status              NormalOrHiddenStatus
+
+    createdAt DateTime @default(now())
+
+    @@map("promotion-levels")
+}
+
+model MemberShipLevel {
+    id                           String @id @default(auto()) @map("_id") @db.ObjectId
+    gradeName                    String
+    totalCost                    Int
+    internationalFreightDiscount Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("membership-levels")
+}
+
+model MemberShipVipLevel {
+    id                           String @id @default(auto()) @map("_id") @db.ObjectId
+    gradeName                    String
+    totalCost                    Int
+    internationalFreightDiscount Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("membership-vip-levels")
+}

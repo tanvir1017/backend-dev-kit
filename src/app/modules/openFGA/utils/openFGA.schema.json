@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.1",
+  "type_definitions": [
+    {
+      "type": "user",
+      "relations": {},
+      "metadata": null
+    },
+    {
+      "type": "group",
+      "relations": {
+        "member": {
+          "this": {}
+        },
+        "can_manage": {
+          "this": {}
+        }
+      },
+      "metadata": {
+        "relations": {
+          "member": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          },
+          "can_manage": {
+            "directly_related_user_types": [
+              {
+                "type": "user"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "type": "permission",
+      "relations": {
+        "granted": {
+          "this": {}
+        },
+        "can_assign": {
+          "this": {}
+        }
+      },
+      "metadata": {
+        "relations": {
+          "granted": {
+            "directly_related_user_types": [
+              {
+                "type": "group",
+                "relation": "member"
+              }
+            ]
+          },
+          "can_assign": {
+            "directly_related_user_types": [
+              {
+                "type": "group",
+                "relation": "member"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

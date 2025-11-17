@@ -1,0 +1,218 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model ExchangeRate {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  from String // the currencies in short form --> CNY
+  to   String // the currencies in short form --> USD
+  rate Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("exchange-rate")
+}
+
+model WhatsappContact {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  imageUrl    String
+
+  @@map("whatsapp-contact")
+}
+
+model SocialMedia {
+  id       String               @id @default(auto()) @map("_id") @db.ObjectId
+  imageUrl String
+  link     String
+  title    String               @default("N/A")
+  status   NormalOrHiddenStatus @default(NORMAL)
+
+  @@map("social-media")
+}
+
+model Bulletin {
+  id        String               @id @default(auto()) @map("_id") @db.ObjectId
+  date      DateTime
+  eventName String
+  status    NormalOrHiddenStatus
+
+  createdAt DateTime @default(now())
+
+  @@map("bulletin") // notice announcement
+}
+
+model Advertising {
+  id                  String               @id @default(auto()) @map("_id") @db.ObjectId
+  link                String?
+  text                String?
+  advertisingImageUrl String
+  status              NormalOrHiddenStatus
+
+  updatedAt DateTime @updatedAt()
+
+  @@map("advertising")
+}
+
+model HelpCenter {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  whatsAppNumber String
+  email          String
+
+  updatedAt DateTime @updatedAt()
+
+  @@map("help-center")
+}
+
+model Blog {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  blogTitle        String
+  date             DateTime
+  level            BlogLevel
+  blogThumbnailUrl String
+  description      String
+
+  createdAt DateTime @default(now())
+}
+
+model ContactUs {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  fullName         String
+  email            String
+  phoneNumber      String
+  phoneCountryCode String
+  orderId          String
+  message          String
+  searchText       String          @default("")
+  status           ContactUsStatus @default(Unread)
+  cratedAt         DateTime        @default(now())
+
+  @@map("contact-us")
+}
+
+model CouponManagement {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  couponName         String
+  promoCode          String
+  couponType         CouponType
+  couponUse          CouponUse
+  fullAmount         Int
+  discount           Int
+  total              Int
+  maximumAmount      Int
+  startingTime       DateTime
+  endingTime         DateTime
+  validityPeriodDays Int
+  status             NormalOrHiddenStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  package Packages[]
+
+  @@map("coupon-management")
+}
+
+model EvaluationManagement {
+  id             String               @id @default(auto()) @map("_id") @db.ObjectId
+  memberId       String
+  score          Int
+  evaluation     String
+  evaluationDate DateTime
+  status         NormalOrHiddenStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("evaluation-management") // means rating
+}
+
+model FAQ {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  question String
+  answer   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faq")
+}
+
+model Favorites {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  taobao_num_iid String
+  main_photo     String
+  title          String
+  descriptions   String
+  price          String
+
+  userId String @db.ObjectId
+  user   User   @relation("favorites", references: [id], fields: [userId], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("favorites")
+}
+
+model DiyOrders {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  productLink String
+  productName String
+  remark      String
+  warehouse   String
+
+  price       Int // in cent, if it is in cny make it dollar. if it is cent then make it cny if needed
+  quantity    Int
+  domesticFee Int // in cent, if it is in cny make it dollar. if it is cent then make it cny if needed
+  productPic  String?
+
+  userId String @db.ObjectId
+  user   User   @relation("diy-orders", references: [id], fields: [userId], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("diy-orders")
+}
+
+// schema.prisma (add this to your existing schema)
+model ActivityLog {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  action      String // CREATE, UPDATE, DELETE, etc.
+  module      String // USER, PRODUCT, ORDER, etc.
+  description String
+  entityId    String? // ID of the affected entity
+  entityType  String? // Type of the affected entity
+  oldData     Json? // Data before change
+  newData     Json? // Data after change
+  changes     Json? // Specific changes made
+  ipAddress   String?
+  userAgent   String?
+  level       String  @default("INFO") // INFO, WARN, ERROR, DEBUG
+  metadata    Json? // Additional context data
+
+  // Operator information (denormalized for performance)
+
+  operatorRole  String
+  operatorEmail String
+
+  // Relationships
+  operatorId String @db.ObjectId
+  operator   User   @relation("activity-logs", fields: [operatorId], references: [id], onDelete: Cascade)
+
+  timestamp DateTime @default(now())
+
+  @@index([operatorId])
+  @@index([module])
+  @@index([action])
+  @@index([entityId])
+  @@index([timestamp])
+  @@index([operatorRole])
+}

@@ -1,0 +1,18 @@
+model
+  schema 1.1
+
+type user
+
+type group
+  relations
+    define member: [user]
+     # Who can manage this group's permissions
+    define can_manage: [user] 
+
+type permission
+  relations
+    # Users get permissions through their group membership
+    define granted: [group#member]
+    
+    # Who can assign this permission to groups
+    define can_assign: [group#member]

@@ -1,0 +1,80 @@
+export const GROUP_LISTS = {
+  ADMIN: "admin",
+  SUPER_ADMINS: "super_admins",
+  USER: "user",
+  PURCHASING_AGENT: "purchasing_agent",
+  WAREHOUSE_STAFF: "warehouse_staff",
+};
+
+export const permissionsList = {
+  // Management
+  USER_MANAGEMENT: "user_management",
+  ASSIGN_WS: "assign_ws",
+  ASSIGN_PA: "assign_pa",
+  HOME_PAGE: "home_page",
+  PRODUCT_LIST: "product_list",
+  BUYER_ACCOUNT: "buyer_account",
+  DELETE: "delete",
+  QC_DETAILS: "qc_details",
+  REMARKS: "remarks",
+  OPERATE_RECORDS: "operate_records",
+  REIMBURSEMENTS: "reimbursements",
+  PURCHASE: "purchase",
+  ASK_FOR_REFUND: "ask_for_refund",
+  CANCEL_REFUND: "cancel_refund",
+  WAREHOUSING: "warehousing",
+  CANCEL_REIMBURSEMENTS: "cancel_reimbursements",
+  CANCEL_RETURN: "cancel_return",
+  COMPLETE_RETURN: "complete_return",
+  CONFIRM_RECEIVED: "confirm_received",
+  PROBLEM_ORDER: "problem_order",
+  CANCEL_PROBLEM_ORDER: "cancel_problem_order",
+
+  PACKAGE_LIST: "package_list",
+  PACKAGE_DETAILS: "package_details",
+  PACKED: "packed",
+  CANCEL_PACKING: "cancel_packing",
+  DISPATCHED: "dispatched",
+
+  UPDATE: "update",
+  //CONFIRM_RECEIVED: "confirm_received",
+  // OPERATE_RECORDS: "operate_records",
+  // REMARKS: "remarks",
+  // PROBLEM_ORDER: "problem_order",
+  // CANCEL_PROBLEM_ORDER: "cancel_problem_order",
+  // REIMBURSEMENTS: "reimbursements",
+  RETURN_SHIPPING_FEE: "return_shipping_fee",
+  //CANCEL_REIMBURSEMENTS: "cancel_reimbursements",
+
+  WAREHOUSE_MANAGEMENT: "warehouse_management",
+  WAREHOUSE_LIST: "warehouse_list",
+  INTERNATIONAL_SHIPPING_MANAGEMENT: "international_shipping_management",
+  MEMBERSHIP_MANAGEMENT: "membership_management",
+  MEMBERSHIP_LEVEL: "membership_level",
+  CONSUMPTION_RECORDS: "consumption_records",
+  ADMIN_RECHARGE: "admin_recharge",
+
+  // Content Management
+  COUPON_MANAGEMENT: "coupon_management",
+  EVALUATION_MANAGEMENT: "evaluation_management",
+  SERVICE_MANAGEMENT: "service_management",
+  ARTICLE_MANAGEMENT: "article_management",
+  HELP_CENTER: "help_center",
+
+  // Marketing Management
+  ADVERTISING_MANAGEMENT: "advertising_management",
+  BLOG_MANAGEMENT: "blog_management",
+  ANNOUNCEMENT_MANAGEMENT: "announcement_management",
+  SOCIAL_MEDIA_MANAGEMENT: "social_media_management",
+  WHATSAPP_MANAGEMENT: "whatsapp_management",
+
+  // System Management
+  COMMISSION_ALLIANCE: "commission_alliance",
+  USER_DETAILS: "user_details",
+  CONTACT_US: "contact_us",
+  GROUP_TIPS: "group_tips",
+  ADMIN_TIPS: "admin_tips",
+  EXCHANGE_RATE_MANAGEMENT: "exchange_rate_management",
+  STATISTICS: "statistics",
+  PROMOTION_LEVEL: "promotion_level",
+};
