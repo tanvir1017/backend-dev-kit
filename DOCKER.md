@@ -1,6 +1,6 @@
-# 📦 KALDMV-SERVER --> Dockerize API
+# 📦 Dockerize API
 
-This is the backend API for the **KALDMV-SERVER** project, built with **Node.js**, **Bun**, **TypeScript**, and **Prisma**, containerized using **Docker**.
+This is the backend API for the **SERVER** project, built with **Node.js**, **Bun**, **TypeScript**, and **Prisma**, containerized using **Docker**.
 
 ---
 

@@ -1,0 +1,37 @@
+/**
+ * enum.prisma
+ * Purpose:
+ * - Centralized file for all Prisma enum types used in the database schema.
+ * Guidelines:
+ * - Use clear, consistent PascalCase names for enums and members.
+ * - Add new values instead of removing or renaming existing ones.
+ * - Document intent for each enum and value if needed.
+ * Usage:
+ * - Reference enums from models.
+ * - Run migrations after changing enums.
+ * Maintenance:
+ * - Keep enums focused, small, and well-documented.
+ */
+
+enum UserRole {
+    ADMIN
+    MEMBER
+    MODERATOR
+}
+
+enum OauthMethod {
+    EMAIL_PASS
+    GOOGLE
+    FACEBOOK
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    OTHER
+}
+
+enum AddressType {
+    HOME
+    WORK
+}
