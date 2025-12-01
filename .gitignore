@@ -38,6 +38,6 @@ build/
 temp/
 tmp/
 
-/src/generated/prisma
 
-/generated/prisma
+prisma/generated/
+node_modules/@prisma/client/
